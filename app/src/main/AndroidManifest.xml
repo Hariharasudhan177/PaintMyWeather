@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddCity" />
+        <activity android:name=".Detail" />
     </application>
 
 </manifest>

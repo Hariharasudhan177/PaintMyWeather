@@ -54,7 +54,26 @@ public class WeatherRequest(private val context: Context,
                 tempInCelcius+=Math.round((temp.temp - 273.15))
                 textView.text = tempInCelcius
 
-                CityList.addToCityList(cityName, context)
+            },
+            //Response.ErrorListener { error -> textView.text = error.toString() })
+            Response.ErrorListener {
+
+                    error ->
+                Toast.makeText(context, getVolleyError(error, context), Toast.LENGTH_LONG).show()
+            })
+
+        return weatherRequest;
+    }
+
+    public fun detailRequest(textView: TextView):JsonObjectRequest  {
+        val weatherRequest = JsonObjectRequest(
+            Request.Method.GET, url,null,
+            Response.Listener { response ->
+
+                var data:String = response.toString()
+                temp =JSONParser.getWeather(data)
+                tempInCelcius+=Math.round((temp.temp - 273.15))
+                textView.text = tempInCelcius
             },
             //Response.ErrorListener { error -> textView.text = error.toString() })
             Response.ErrorListener {

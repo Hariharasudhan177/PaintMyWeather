@@ -1,6 +1,7 @@
 package com.example.paintmyweather
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
+        Log.d("hari", "onResume")
         super.onResume()
         checkCityList()
     }
@@ -64,11 +66,11 @@ class MainActivity : AppCompatActivity() {
         checkCityList()
     }
 
-    fun checkCityList(){
+    public fun checkCityList(){
         val welcomMessage = findViewById<TextView>(R.id.welcomeMessage)
         val cityListView = findViewById<ListView>(R.id.list_view)
 
-        cityList = CityList.checkCityListFile(applicationContext,welcomMessage,cityListView);
+        cityList = CityList.checkCityListFile(applicationContext,welcomMessage,cityListView,this);
     }
 
 }

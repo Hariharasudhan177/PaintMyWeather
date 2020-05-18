@@ -1,10 +1,15 @@
 package com.example.paintmyweather
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import org.json.JSONException
 import org.json.JSONObject
 import org.w3c.dom.Text
@@ -20,7 +25,8 @@ public class CityList{
 
         fun checkCityListFile(context: Context,
                               welcomeMessage: TextView,
-                              cityListView: ListView): MutableList<String>{
+                              cityListView: ListView,
+                              activity: MainActivity): MutableList<String>{
 
             val cityListFromFile = mutableListOf<String>()
             val cityListFileName = "cityListFileName"
@@ -39,7 +45,7 @@ public class CityList{
                     }
                 }
 
-                this.ToggleVisibility(cityListFromFile,welcomeMessage,cityListView,context)
+                this.ToggleVisibility(cityListFromFile,welcomeMessage,cityListView,context, activity)
 
                 return cityListFromFile
 
@@ -74,10 +80,34 @@ public class CityList{
             }
         }
 
+        fun removeCityFromList(removeCity:String?,
+                               context: Context){
+            val cityListFileName = "cityListFileName"
+            context.openFileOutput(cityListFileName, Context.MODE_PRIVATE).use { cityFile ->
+
+                Log.d("hari", "haril"+cityList.size)
+
+                if(cityList.size != 0){
+                    Log.d("hari", "harik"+cityList.size)
+                    cityList.forEachIndexed() {index,city ->
+                        Log.d("hari", "harik"+city+removeCity)
+                        if(city != removeCity) {
+                            cityFile.write(city.toByteArray())
+                            cityFile.write(("\n").toByteArray())
+
+                        }else {
+                            cityList.removeAt(index)
+                        }
+                    }
+                }
+            }
+        }
+
         fun ToggleVisibility(cityListCurrent: MutableList<String>,
                              welcomeMessage: TextView,
                              cityListView:ListView,
-                             context: Context){
+                             context: Context,
+                             activity: MainActivity){
             if(cityListCurrent.size == 0){
                 welcomeMessage.visibility = View.VISIBLE
                 cityListView.visibility = View.GONE
@@ -86,8 +116,23 @@ public class CityList{
                 cityListView.visibility = View.VISIBLE
 
                 cityListView.adapter = ListViewAdaptor(context, cityListCurrent)
-            }
 
+                cityListView.setOnItemClickListener{ parent, view, position, id ->
+                    var intent = Intent(context, Detail::class.java)
+                    intent.flags=FLAG_ACTIVITY_NEW_TASK;
+                    var cityName:String = parent.getItemAtPosition(position) as String
+                    intent.putExtra("position", cityName)
+                    context.startActivity(intent)
+                }
+
+                cityListView.setOnItemLongClickListener { parent, view, position, id ->
+                    var supportFragmentManager = activity.supportFragmentManager;
+                    var removeD = RemoveDialog()
+                    var cityName:String = parent.getItemAtPosition(position) as String
+                    removeD.show(supportFragmentManager, cityName)
+                    true
+                }
+            }
         }
     }
 }

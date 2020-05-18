@@ -12,7 +12,7 @@ public class ListViewAdaptor(private val context: Context,
 
     private val inflater: LayoutInflater = this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     override fun getCount(): Int { return dataList.size }
-    override fun getItem(position: Int): Int { return position }
+    override fun getItem(position: Int): String { return dataList[position] }
     override fun getItemId(position: Int): Long { return position.toLong() }
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup): View {
