@@ -33,6 +33,7 @@ public class WeatherRequest(private val context: Context,
             Request.Method.GET, url,null,
             Response.Listener { response ->
                 CityList.addToCityList(cityName, context)
+                Toast.makeText(context, "$cityName added", Toast.LENGTH_LONG).show()
             },
             //Response.ErrorListener { error -> textView.text = error.toString() })
             Response.ErrorListener {

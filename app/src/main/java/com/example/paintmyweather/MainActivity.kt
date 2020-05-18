@@ -19,6 +19,7 @@ import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.util.Log
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +37,15 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             val intent = Intent(this, AddCity::class.java)
             startActivity(intent)
+        }
+
+        var swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swiperefresh)
+        swipeRefreshLayout.setOnRefreshListener {
+            checkCityList()
+
+            if (null != swipeRefreshLayout) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
         }
     }
 

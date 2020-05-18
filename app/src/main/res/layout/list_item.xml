@@ -19,7 +19,6 @@
             android:id="@+id/row_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name"
             android:textSize="10pt"
             android:layout_centerVertical="true"
             android:textStyle="bold" />
@@ -28,7 +27,6 @@
             android:id="@+id/row_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name"
             android:textStyle="bold"
             android:textSize="15pt"
             android:textAlignment="center"

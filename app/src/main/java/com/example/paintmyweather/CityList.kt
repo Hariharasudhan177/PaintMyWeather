@@ -28,6 +28,15 @@ public class CityList{
                               cityListView: ListView,
                               activity: MainActivity): MutableList<String>{
 
+            var cityListFromFile = mutableListOf<String>()
+            cityListFromFile = getCityListFromFile(context)
+            this.ToggleVisibility(cityListFromFile,welcomeMessage,cityListView,context, activity)
+            return cityListFromFile
+
+        }
+
+        fun getCityListFromFile(context: Context): MutableList<String>{
+
             val cityListFromFile = mutableListOf<String>()
             val cityListFileName = "cityListFileName"
             var fileInputStream: FileInputStream? = null
@@ -45,8 +54,6 @@ public class CityList{
                     }
                 }
 
-                this.ToggleVisibility(cityListFromFile,welcomeMessage,cityListView,context, activity)
-
                 return cityListFromFile
 
             }catch(e: Exception){
@@ -57,6 +64,7 @@ public class CityList{
         }
 
         fun addToCityList(newCity:String, context: Context){
+            cityList = CityList.getCityListFromFile(context);
             val cityListFileName = "cityListFileName"
             context.openFileOutput(cityListFileName, Context.MODE_PRIVATE).use { cityFile ->
 
@@ -86,7 +94,7 @@ public class CityList{
             context.openFileOutput(cityListFileName, Context.MODE_PRIVATE).use { cityFile ->
 
                 Log.d("hari", "haril"+cityList.size)
-
+                var indexToDelete = -1;
                 if(cityList.size != 0){
                     Log.d("hari", "harik"+cityList.size)
                     cityList.forEachIndexed() {index,city ->
@@ -96,9 +104,10 @@ public class CityList{
                             cityFile.write(("\n").toByteArray())
 
                         }else {
-                            cityList.removeAt(index)
+                            indexToDelete = index
                         }
                     }
+                    cityList.removeAt(indexToDelete)
                 }
             }
         }
