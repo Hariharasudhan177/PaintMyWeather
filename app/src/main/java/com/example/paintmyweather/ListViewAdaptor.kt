@@ -19,6 +19,13 @@ public class ListViewAdaptor(private val context: Context,
         var dataitem = dataList[position]
         val rowView = inflater.inflate(R.layout.list_item, null)
         rowView.findViewById<TextView>(R.id.row_name).text = dataitem;
+        //rowView.findViewById<TextView>(R.id.row_temp).text = dataitem[1];
+
+        val queue = WeatherSingleton.getInstance(context).requestQueue
+        var weatherRequest=WeatherRequest(context, dataitem)
+        var cityAddRequest = weatherRequest.tempRequest(rowView.findViewById<TextView>(R.id.row_temp))
+        queue.add(cityAddRequest)
+
         return rowView
     }
 }

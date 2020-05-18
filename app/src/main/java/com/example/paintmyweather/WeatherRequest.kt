@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
@@ -43,14 +44,15 @@ public class WeatherRequest(private val context: Context,
         return weatherRequest;
     }
 
-    public fun tempRequest():JsonObjectRequest  {
+    public fun tempRequest(textView: TextView):JsonObjectRequest  {
         val weatherRequest = JsonObjectRequest(
             Request.Method.GET, url,null,
             Response.Listener { response ->
 
                 var data:String = response.toString()
-                temp =JSONParser.getWeather(data);
-                tempInCelcius+=Math.round((temp.temp - 273.15));
+                temp =JSONParser.getWeather(data)
+                tempInCelcius+=Math.round((temp.temp - 273.15))
+                textView.text = tempInCelcius
 
                 CityList.addToCityList(cityName, context)
             },

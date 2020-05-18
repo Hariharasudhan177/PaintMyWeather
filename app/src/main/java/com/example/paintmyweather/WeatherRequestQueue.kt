@@ -10,7 +10,8 @@ public class WeatherRequestQueue(private val context: Context,
     public fun addAllCityRequest()  {
         cityList.forEach { city->
             var weatherRequest=WeatherRequest(context, city)
-            var request = weatherRequest.tempRequest()
+            //var request = weatherRequest.tempRequest()
+            //queue.add(request)
         }
     }
 

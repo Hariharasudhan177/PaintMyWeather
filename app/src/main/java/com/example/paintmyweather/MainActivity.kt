@@ -28,8 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        cityList = CityList.checkCityListFile(applicationContext);
-        ToggleVisibility(cityList)
+        checkCityList();
 
         val fab: View = findViewById(R.id.fab)
 
@@ -48,8 +47,28 @@ class MainActivity : AppCompatActivity() {
         }else {
             welcomMessage.visibility = View.GONE
             cityListView.visibility = View.VISIBLE
+
+            Log.d("hari", "hari" + cityListCurrent[0])
+            cityListView.adapter = ListViewAdaptor(this@MainActivity, cityListCurrent)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkCityList()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        checkCityList()
+    }
+
+    fun checkCityList(){
+        val welcomMessage = findViewById<TextView>(R.id.welcomeMessage)
+        val cityListView = findViewById<ListView>(R.id.list_view)
+
+        cityList = CityList.checkCityListFile(applicationContext,welcomMessage,cityListView);
     }
 
 }
