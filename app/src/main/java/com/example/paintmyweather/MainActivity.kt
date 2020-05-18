@@ -1,22 +1,53 @@
 package com.example.paintmyweather
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ListView
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
+import java.lang.Exception
+import androidx.core.app.ComponentActivity
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.util.Log
+
 
 class MainActivity : AppCompatActivity() {
+
+    var cityList: MutableList<String> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        cityList = CityList.checkCityListFile(applicationContext);
+        ToggleVisibility(cityList)
 
         val fab: View = findViewById(R.id.fab)
 
         fab.setOnClickListener { view ->
             val intent = Intent(this, AddCity::class.java)
             startActivity(intent)
+        }
+    }
+
+    fun ToggleVisibility(cityListCurrent: MutableList<String>){
+        val welcomMessage = findViewById<TextView>(R.id.welcomeMessage)
+        val cityListView = findViewById<ListView>(R.id.list_view)
+        if(cityListCurrent.size == 0){
+            welcomMessage.visibility = View.VISIBLE
+            cityListView.visibility = View.GONE
+        }else {
+            welcomMessage.visibility = View.GONE
+            cityListView.visibility = View.VISIBLE
         }
 
     }

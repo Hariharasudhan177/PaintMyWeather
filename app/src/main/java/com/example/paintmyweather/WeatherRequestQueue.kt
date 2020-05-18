@@ -11,7 +11,6 @@ public class WeatherRequestQueue(private val context: Context,
         cityList.forEach { city->
             var weatherRequest=WeatherRequest(context, city)
             var request = weatherRequest.tempRequest()
-            queue.add(request)
         }
     }
 

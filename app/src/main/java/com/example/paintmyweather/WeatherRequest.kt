@@ -18,15 +18,30 @@ import java.net.SocketTimeoutException
 import com.android.volley.NetworkResponse
 
 
-
-public class WeatherRequest(private val context: Context,private val cityName: String){
-
+public class WeatherRequest(private val context: Context,
+                            private val cityName: String){
     val url = "https://api.openweathermap.org/data/2.5/weather?q=" +
             cityName +
             "&appid=f0b529b1bc5787191a9ad7f1db867181"
 
     var temp:Temperature = Temperature();
     var tempInCelcius: String = ""
+
+    public fun cityAddRequest():JsonObjectRequest  {
+        val weatherRequest = JsonObjectRequest(
+            Request.Method.GET, url,null,
+            Response.Listener { response ->
+                CityList.addToCityList(cityName, context)
+            },
+            //Response.ErrorListener { error -> textView.text = error.toString() })
+            Response.ErrorListener {
+
+                    error ->
+                Toast.makeText(context, getVolleyError(error, context), Toast.LENGTH_LONG).show()
+            })
+
+        return weatherRequest;
+    }
 
     public fun tempRequest():JsonObjectRequest  {
         val weatherRequest = JsonObjectRequest(
@@ -36,11 +51,12 @@ public class WeatherRequest(private val context: Context,private val cityName: S
                 var data:String = response.toString()
                 temp =JSONParser.getWeather(data);
                 tempInCelcius+=Math.round((temp.temp - 273.15));
-                Log.d("hari", "hari"+tempInCelcius);
 
+                CityList.addToCityList(cityName, context)
             },
             //Response.ErrorListener { error -> textView.text = error.toString() })
             Response.ErrorListener {
+
                     error ->
                 Toast.makeText(context, getVolleyError(error, context), Toast.LENGTH_LONG).show()
             })

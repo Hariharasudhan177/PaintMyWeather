@@ -1,5 +1,6 @@
 package com.example.paintmyweather
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,8 +22,8 @@ class AddCity : AppCompatActivity() {
             cityName = searchField.text.toString();
             val queue = WeatherSingleton.getInstance(applicationContext).requestQueue
             var weatherRequest=WeatherRequest(applicationContext, cityName)
-            var request = weatherRequest.tempRequest()
-            queue.add(request)
+            var cityAddRequest = weatherRequest.cityAddRequest()
+            queue.add(cityAddRequest)
         }
 
         var cancel = findViewById<Button>(R.id.cancelButton)
@@ -31,4 +32,5 @@ class AddCity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 }
